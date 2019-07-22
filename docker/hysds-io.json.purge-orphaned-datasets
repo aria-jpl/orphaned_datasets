@@ -1,0 +1,25 @@
+{
+  "label": "Orphaned dataset finder",
+  "component": "mozart",
+  "submission_type": "individual",
+  "params": [
+      {
+        "name": "bucket",
+        "type": "text",
+        "from": "submitter"
+      },
+      {
+        "name": "dataset_type",
+        "type": "enum",
+        "enumerables": ["slc", "interferogram"],
+        "from": "submitter"
+      },
+      {
+        "name": "mode",
+        "type": "enum",
+        "enumerables": ["PRETEND", "PERMANENT"],
+        "default": "PRETEND",
+        "from": "submitter"
+      }
+  ]
+}
