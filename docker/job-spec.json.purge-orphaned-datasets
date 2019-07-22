@@ -1,7 +1,10 @@
 {
   "required_queues": ["system-jobs-queue"],
   "command": "python /home/ops/verdi/ops/lightweight-jobs/purge_orphaned_datasets.py",
-  "disk_usage": "1GB",
+  "imported_worker_files": {
+    "$HOME/.aws": ["/home/ops/.aws", "ro"]
+  },
+  "disk_usage": "2GB",
   "params" : [
       {
         "name": "bucket",
