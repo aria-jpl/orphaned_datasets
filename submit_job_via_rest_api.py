@@ -6,14 +6,14 @@ from datetime import datetime
 
 DATASET_TYPE = sys.argv[1]  # ["slc", "interferogram"]
 BUCKET = sys.argv[2]  # aria-ops-dataset-bucket
-MODE = sys.argv[2]  # ["PRETEND", "PERMANENT"]
+MODE = sys.argv[3]  # ["PRETEND", "PERMANENT"]
 
 queue = 'system-jobs-queue'
-job_type = "job-orphaned-dataset-finder"
-job_release = "v0.0.1"
+job_type = "job-purge-orphaned-datasets"
+job_release = "release-20190722-3"
 tag_name = '["od_orphan_finder_{}_{}"]'.format(DATASET_TYPE, datetime.now().date())
 
-mozart_base_url = "https://c-mozart.aria.hysds.io"
+mozart_base_url = "https://b-jobs.grfn.hysds.io"
 job_submit_url = mozart_base_url + '/mozart/api/v0.1/job/submit'
 
 job_params = {
@@ -34,4 +34,6 @@ params = {
 req = requests.post(job_submit_url, params=params, verify=False)
 if req.status_code != 200:
     req.raise_for_status()
+print(req.text)
 result = req.json()
+print(result)
