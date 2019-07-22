@@ -1,6 +1,6 @@
 FROM hysds/pge-base:latest
 
-MAINTAINER malarout "Namrata.Malarout@jpl.nasa.gov"
+MAINTAINER malarout "dustin.k.lo@jpl.nasa.gov"
 LABEL description="Lightweight System Jobs"
 
 # provision lightweight-jobs PGE
