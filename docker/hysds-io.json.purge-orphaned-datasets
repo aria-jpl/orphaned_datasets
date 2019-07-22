@@ -1,7 +1,7 @@
 {
   "label": "Orphaned dataset finder",
-  "component": "mozart",
   "submission_type": "individual",
+  "allowed_accounts": [ "ops" ],
   "params": [
       {
         "name": "bucket",
