@@ -1,6 +1,6 @@
 {
   "required_queues": ["system-jobs-queue"],
-  "command": "/home/ops/verdi/ops/purge_orphaned_datasets/purge_orphaned_datasets.py",
+  "command": "python /home/ops/verdi/ops/lightweight-jobs/purge_orphaned_datasets.py",
   "disk_usage": "1GB",
   "params" : [
       {
