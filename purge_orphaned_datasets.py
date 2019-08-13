@@ -66,8 +66,7 @@ if __name__ == '__main__':
     total_counter = dataset_finder.counter
     email_content = generate_email_content(dataset_type, orphans_found, total_counter, dad_joke)
 
-    # email_sender = email_recipient = 'grfn-ops@jpl.nasa.gov'
-    email_sender = email_recipient = 'dustinlo.pcc@gmail.com'
+    email_sender = email_recipient = 'grfn-ops@jpl.nasa.gov'
     email_subject = 'Orphaned Finder Results: %s' % dataset_type
     send_email(email_content, email_sender, email_recipient, email_subject)
     ########################################

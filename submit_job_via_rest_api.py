@@ -10,11 +10,11 @@ MODE = sys.argv[3]  # ["PRETEND", "PERMANENT"]
 
 queue = 'system-jobs-queue'
 job_type = "job-purge-orphaned-datasets"
-job_release = "release-20190722-3"
+job_release = sys.argv[4]  # release-20190722-3
 tag_name = '["od_orphan_finder_{}_{}"]'.format(DATASET_TYPE, datetime.now().date())
 
 # https://c-jobs.grfn.hysds.io/mozart/api/v0.1/job/submit
-job_submit_url = sys.argv[4]
+job_submit_url = sys.argv[5]
 
 job_params = {
     "bucket": BUCKET,

@@ -187,7 +187,7 @@ def generate_email_content(dataset_type, total_found, total_count, dad_joke):
     <br>
     """
     if dad_joke:
-        html_template += '<p style="font-family:Roboto">Dad Joke of the day:</p>'
+        html_template += '<h3 style="font-family:Roboto">Dad Joke of the day:</h3>'
         html_template += '<p style="font-family:Roboto">{dad_joke}</p>'.format(dad_joke=dad_joke)
     return html_template.format(dataset_type=dataset_type, total_found=total_found, total_count=total_count)
 
@@ -210,7 +210,8 @@ def send_email(html_content, sender, receiver, subject):
 def get_dad_joke():
     joke = None
     try:
-        req = requests.get('https://icanhazdadjoke.com/', timeout=60)
+        headers = {'Accept': 'application/json'}
+        req = requests.get('https://icanhazdadjoke.com/', headers=headers, timeout=60)
         res = req.json()
         joke = res['joke']
     except Exception as e:
