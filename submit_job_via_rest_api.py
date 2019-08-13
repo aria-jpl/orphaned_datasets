@@ -13,8 +13,8 @@ job_type = "job-purge-orphaned-datasets"
 job_release = "release-20190722-3"
 tag_name = '["od_orphan_finder_{}_{}"]'.format(DATASET_TYPE, datetime.now().date())
 
-mozart_base_url = "https://b-jobs.grfn.hysds.io"
-job_submit_url = mozart_base_url + '/mozart/api/v0.1/job/submit'
+# https://c-jobs.grfn.hysds.io/mozart/api/v0.1/job/submit
+job_submit_url = sys.argv[4]
 
 job_params = {
     "bucket": BUCKET,

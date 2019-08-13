@@ -4,11 +4,18 @@ from datetime import datetime
 import pytz
 import csv
 from botocore.exceptions import ClientError
+from hysds_commons.net_utils import get_container_host_ip
+
+import smtplib
+
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
 
 
 class OrphanedDatasetsFinder:
     def __init__(self, mode, s3_client, bucket_resource, bucket, all_datasets_in_grq, results_file, logger):
         self.counter = 0
+        self.orphans_found = 0
 
         self.mode = mode  # ['PRETEND', 'PERMANENT']
         self.s3_client = s3_client  # boto3.client('s3')
@@ -56,6 +63,7 @@ class OrphanedDatasetsFinder:
                 if not data_json_last_modified:  # .dataset.json not found in s3, therefore it is not a valid dataset
                     self.logger.error('%s NOT FOUND IN S3' % data_set_json)
                     self.csv_writer.writerow([self.bucket, prefix, data_set_id, 'dataset.json NOT FOUND IN S3'])
+                    self.orphans_found += 1
                     if self.mode == 'PERMANENT':  # purge data_set_id
                         self.logger.info('Sent to purge: %s' % prefix)
                         delete_s3_folder(self.bucket_resource, prefix)
@@ -69,6 +77,7 @@ class OrphanedDatasetsFinder:
                     if (now_utc - data_json_last_modified).total_seconds() > 86400:  # if greater than 24 hours
                         self.logger.info('%s IS OLDER THAN 24 HOURS, WILL DELETE' % data_set_json)
                         self.csv_writer.writerow([self.bucket, prefix, data_set_id, 'dataset.json FILE > 24 HOURS'])
+                        self.orphans_found += 1
                         if self.mode == 'PERMANENT':
                             self.logger.info('Sent to purge: %s' % prefix)
                             delete_s3_folder(self.bucket_resource, prefix)
@@ -168,3 +177,42 @@ def read_context():
         return context
     except Exception as e:
         raise Exception('unable to parse _context.json from work directory')
+
+
+def generate_email_content(dataset_type, total_found, total_count, dad_joke):
+    html_template = """
+    <h1 style="font-family:Roboto">{dataset_type}</h1>
+    <h3 style="font-family:Roboto">Total orphans found: {total_found} out of {total_count}</h3>
+    <br>
+    <br>
+    """
+    if dad_joke:
+        html_template += '<p style="font-family:Roboto">Dad Joke of the day:</p>'
+        html_template += '<p style="font-family:Roboto">{dad_joke}</p>'.format(dad_joke=dad_joke)
+    return html_template.format(dataset_type=dataset_type, total_found=total_found, total_count=total_count)
+
+
+def send_email(html_content, sender, receiver, subject):
+    msg = MIMEMultipart('alternative')
+    msg['Subject'] = subject
+    msg['From'] = sender
+    msg['To'] = receiver
+
+    email_message = MIMEText(html_content, 'html')
+    msg.attach(email_message)
+
+    s = smtplib.SMTP(get_container_host_ip())
+    s.sendmail(sender, receiver, msg.as_string())
+    print("Email sent to: {}!".format(receiver))
+    s.quit()
+
+
+def get_dad_joke():
+    joke = None
+    try:
+        req = requests.get('https://icanhazdadjoke.com/', timeout=60)
+        res = req.json()
+        joke = res['joke']
+    except Exception as e:
+        joke = e
+    return joke
