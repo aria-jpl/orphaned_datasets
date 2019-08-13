@@ -6,7 +6,8 @@ from datetime import datetime
 import logging as logger
 
 from hysds.celery import app
-from util import OrphanedDatasetsFinder, read_context, pull_all_data_sets, publish_dataset
+from util import OrphanedDatasetsFinder, read_context, pull_all_data_sets, publish_dataset, generate_email_content, \
+    send_email, get_dad_joke
 
 urllib3.disable_warnings()
 
@@ -56,4 +57,18 @@ if __name__ == '__main__':
     dataset_finder = OrphanedDatasetsFinder(mode, s3_client, bucket_resource, bucket, all_data_sets_in_grq,
                                             results_file, logger)
     dataset_finder.traverse_s3_bucket(starting_prefix, 1)
+
+    ########################################
+    # sending email
+    dad_joke = get_dad_joke()
+
+    orphans_found = dataset_finder.orphans_found
+    total_counter = dataset_finder.counter
+    email_content = generate_email_content(dataset_type, orphans_found, total_counter, dad_joke)
+
+    email_sender = email_recipient = 'grfn-ops@jpl.nasa.gov'
+    email_subject = 'Orphaned Finder Results: %s' % dataset_type
+    send_email(email_content, email_sender, email_recipient, email_subject)
+    ########################################
+
     publish_dataset(product_id)
