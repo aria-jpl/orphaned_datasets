@@ -4,6 +4,8 @@
   "imported_worker_files": {
     "$HOME/.aws": ["/home/ops/.aws", "ro"]
   },
+  "soft_time_limit": 7200,
+  "time_limit": 7200,
   "disk_usage": "2GB",
   "params" : [
       {
