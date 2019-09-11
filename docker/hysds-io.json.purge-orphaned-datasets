@@ -2,6 +2,9 @@
   "label": "Orphaned dataset finder",
   "submission_type": "individual",
   "allowed_accounts": [ "ops" ],
+  "soft_time_limit": 7200,
+  "time_limit": 7200,
+  "disk_usage": "2GB",
   "params": [
       {
         "name": "bucket",
