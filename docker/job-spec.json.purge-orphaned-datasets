@@ -21,7 +21,7 @@
         "destination": "context"
       },
       {
-        "name": "text_area",
+        "name": "test_text_area",
         "destination": "context"
       },
       {
