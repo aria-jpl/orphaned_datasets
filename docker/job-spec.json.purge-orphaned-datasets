@@ -17,6 +17,14 @@
         "destination": "context"
       },
       {
+        "name": "test_number",
+        "destination": "context"
+      },
+      {
+        "name": "text_area",
+        "destination": "context"
+      },
+      {
         "name": "mode",
         "destination": "context"
       }
