@@ -1,3 +1,4 @@
+from builtins import object
 import json
 import requests
 from datetime import datetime
@@ -12,7 +13,7 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
 
-class OrphanedDatasetsFinder:
+class OrphanedDatasetsFinder(object):
     def __init__(self, mode, s3_client, bucket_resource, bucket, all_datasets_in_grq, results_file, logger):
         self.counter = 0
         self.orphans_found = 0

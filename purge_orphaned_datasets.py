@@ -1,3 +1,4 @@
+from __future__ import absolute_import
 import os
 import sys
 import boto3
@@ -6,7 +7,7 @@ from datetime import datetime
 import logging as logger
 
 from hysds.celery import app
-from util import OrphanedDatasetsFinder, read_context, pull_all_data_sets, publish_dataset, generate_email_content, \
+from .util import OrphanedDatasetsFinder, read_context, pull_all_data_sets, publish_dataset, generate_email_content, \
     send_email, get_dad_joke
 
 urllib3.disable_warnings()
